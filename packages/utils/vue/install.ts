@@ -1,8 +1,15 @@
+/*
+ * @Description:
+ * @Author: yt120763
+ * @Date: 2022-12-10 14:09:10
+ * @LastEditors: yt120763
+ * @LastEditTime: 2022-12-10 14:21:22
+ */
 import { NOOP } from '@vue/shared'
 
 import type { App, Directive } from 'vue'
 import type { SFCInstallWithContext, SFCWithInstall } from './typescript'
-
+// 普通组件安装
 export const withInstall = <T, E extends Record<string, any>>(
   main: T,
   extra?: E
@@ -20,7 +27,7 @@ export const withInstall = <T, E extends Record<string, any>>(
   }
   return main as SFCWithInstall<T> & E
 }
-
+// 函数安装
 export const withInstallFunction = <T>(fn: T, name: string) => {
   ;(fn as SFCWithInstall<T>).install = (app: App) => {
     ;(fn as SFCInstallWithContext<T>)._context = app._context
@@ -29,7 +36,7 @@ export const withInstallFunction = <T>(fn: T, name: string) => {
 
   return fn as SFCInstallWithContext<T>
 }
-
+// 指令
 export const withInstallDirective = <T extends Directive>(
   directive: T,
   name: string
@@ -40,7 +47,7 @@ export const withInstallDirective = <T extends Directive>(
 
   return directive as SFCWithInstall<T>
 }
-
+// 空函数
 export const withNoopInstall = <T>(component: T) => {
   ;(component as SFCWithInstall<T>).install = NOOP
 

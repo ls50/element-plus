@@ -7,7 +7,8 @@ node_modules
 
 # System
 .DS_Store
-
+# local history
+.history
 # Bundle
 dist
 coverage
