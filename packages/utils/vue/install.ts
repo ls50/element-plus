@@ -3,7 +3,7 @@
  * @Author: yt120763
  * @Date: 2022-12-10 14:09:10
  * @LastEditors: yt120763
- * @LastEditTime: 2022-12-10 14:21:22
+ * @LastEditTime: 2022-12-10 16:24:04
  */
 import { NOOP } from '@vue/shared'
 
@@ -19,7 +19,7 @@ export const withInstall = <T, E extends Record<string, any>>(
       app.component(comp.name, comp)
     }
   }
-
+  // ??? 这里是什么意思？
   if (extra) {
     for (const [key, comp] of Object.entries(extra)) {
       ;(main as any)[key] = comp

@@ -42,8 +42,7 @@
               v-clickoutside="handleMinTimeClose"
               :class="drpNs.e('time-picker-wrap')"
             >
-              <el-input
-                v-if="!showTimeSelect"
+              <!-- <el-input
                 size="small"
                 :class="drpNs.e('editor')"
                 :disabled="rangeState.selecting"
@@ -53,8 +52,8 @@
                 @focus="minTimePickerVisible = true"
                 @input="(val) => handleTimeInput(val, 'min')"
                 @change="(val) => handleTimeChange(val, 'min')"
-              />
-              <time-pick-panel
+              /> -->
+              <!-- <time-pick-panel
                 v-if="!showTimeSelect"
                 :visible="minTimePickerVisible"
                 :format="timeFormat"
@@ -62,9 +61,15 @@
                 :time-arrow-control="arrowControl"
                 :parsed-value="leftDate"
                 @pick="handleMinTimePick"
-              />
-              <el-time-select
+              /> -->
+              <!-- <el-time-select
                 v-else
+                :format="timeFormat"
+                start="00:00"
+                step="00:30"
+                end="23:30"
+              /> -->
+              <el-time-select
                 format="HH:mm"
                 :class="drpNs.e('editor')"
                 :disabled="rangeState.selecting"
@@ -76,7 +81,6 @@
                 step="00:30"
                 end="23:30"
                 @focus="minTimePickerVisible = true"
-                @change="(val) => handleTimeInput(val, 'min')"
               />
             </span>
           </span>
@@ -101,8 +105,7 @@
               v-clickoutside="handleMaxTimeClose"
               :class="drpNs.e('time-picker-wrap')"
             >
-              <el-input
-                v-if="!showTimeSelect"
+              <!-- <el-input
                 size="small"
                 :class="drpNs.e('editor')"
                 :disabled="rangeState.selecting"
@@ -113,8 +116,8 @@
                 @focus="minDate && (maxTimePickerVisible = true)"
                 @input="(val) => handleTimeInput(val, 'max')"
                 @change="(val) => handleTimeChange(val, 'max')"
-              />
-              <time-pick-panel
+              /> -->
+              <!-- <time-pick-panel
                 v-if="!showTimeSelect"
                 datetime-role="end"
                 :visible="maxTimePickerVisible"
@@ -126,7 +129,12 @@
               <el-time-select
                 v-else
                 :format="timeFormat"
-                :disabled="rangeState.selecting"
+                start="00:00"
+                step="00:30"
+                end="23:30"
+              /> -->
+              <el-time-select
+                :format="timeFormat"
                 datetime-role="end"
                 :class="drpNs.e('editor')"
                 placeholder="选择时间"
@@ -137,7 +145,7 @@
                 step="00:30"
                 end="23:30"
                 @focus="minTimePickerVisible = true"
-                @change="(val) => handleTimeInput(val, 'max')"
+                @change="handleMaxTimePick"
               />
             </span>
           </span>
@@ -697,6 +705,7 @@ const handleMaxTimePick = (
     minDate.value = maxDate.value
   }
 }
+
 const handleClear = () => {
   leftDate.value = getDefaultValue(unref(defaultValue), {
     lang: unref(lang),

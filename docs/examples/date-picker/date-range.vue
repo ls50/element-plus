@@ -1,6 +1,13 @@
+<!--
+ * @Description:
+ * @Author: yt120763
+ * @Date: 2022-12-10 14:09:10
+ * @LastEditors: yt120763
+ * @LastEditTime: 2022-12-10 18:55:46
+-->
 <template>
   <el-radio-group v-model="size" label="size control" size="small">
-    <el-radio-button label="large">large</el-radio-button>
+    <el-radio-button label="large">大大大</el-radio-button>
     <el-radio-button label="default">default</el-radio-button>
     <el-radio-button label="small">small</el-radio-button>
   </el-radio-group>
@@ -17,7 +24,7 @@
       />
     </div>
     <div class="block">
-      <span class="demonstration">With quick options</span>
+      <span class="demonstration">With quick options1111</span>
       <el-date-picker
         v-model="value2"
         type="daterange"

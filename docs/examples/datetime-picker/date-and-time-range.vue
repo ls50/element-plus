@@ -1,3 +1,10 @@
+<!--
+ * @Description:
+ * @Author: yt120763
+ * @Date: 2022-12-10 14:09:10
+ * @LastEditors: yt120763
+ * @LastEditTime: 2022-12-10 19:32:09
+-->
 <template>
   <div class="block">
     <span class="demonstration">Default</span>
@@ -20,6 +27,18 @@
       end-placeholder="End date"
     />
   </div>
+  <div class="block">
+    <span class="demonstration">时间范围select</span>
+    <el-date-picker
+      v-model="value3"
+      type="datetimerangeselect"
+      range-separator="至"
+      value-format="YYYY-MM-DD HH:mm"
+      format="YYYY-MM-DD HH:mm"
+      start-placeholder="开始日期"
+      end-placeholder="结束日期"
+    />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -30,6 +49,8 @@ const value1 = ref<[Date, Date]>([
   new Date(2000, 10, 11, 10, 10),
 ])
 const value2 = ref('')
+
+const value3 = ref<[Date, Date]>([])
 
 const shortcuts = [
   {

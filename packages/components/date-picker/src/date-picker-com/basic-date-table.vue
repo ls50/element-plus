@@ -11,6 +11,7 @@
     @mouseup="handleMouseUp"
   >
     <tbody ref="tbodyRef">
+      <!-- 星期 包含国际化内容 -->
       <tr>
         <th v-if="showWeekNumber" scope="col">{{ t('el.datepicker.week') }}</th>
         <th
@@ -74,30 +75,42 @@ const tableRows = ref<DateCell[][]>([[], [], [], [], [], []])
 let focusWithClick = false
 
 // todo better way to get Day.js locale object
-const firstDayOfWeek = (props.date as any).$locale().weekStart || 7
+const firstDayOfWeek = (props.date as any).$locale().weekStart || 7 // 一周的第一天是周一还是周日 0 => 7
+// ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 const WEEKS_CONSTANT = props.date
   .locale('en')
   .localeData()
   .weekdaysShort()
   .map((_) => _.toLowerCase())
-
+// 偏移量 ??? 怎么计算出来的
 const offsetDay = computed(() => {
   // Sunday 7(0), cal the left and right offset days, 3217654, such as Monday is -1, the is to adjust the position of the first two rows of dates
+  //  周日已经是从7了 那么其他日就等于
+  // 周四 7 - 4 = 3
+  // 周五 7 - 5 = 2
+  // 周六 7 - 6 = 1
+  // 周日 7 - 7 = 0
+  // 周一        -1
+  // 周二        -2
+  // 周三        -3
+
   return firstDayOfWeek > 3 ? 7 - firstDayOfWeek : -firstDayOfWeek
 })
 
 const startDate = computed(() => {
   const startDayOfMonth = props.date.startOf('month')
+  // 开始日期 当月的第一天是周几 如果是周日减掉7天
   return startDayOfMonth.subtract(startDayOfMonth.day() || 7, 'day')
 })
 
 const WEEKS = computed(() => {
+  // 两次连接从中取得，确保全部都能取到
   return WEEKS_CONSTANT.concat(WEEKS_CONSTANT).slice(
     firstDayOfWeek,
     firstDayOfWeek + 7
   )
 })
-
+// ?? 判断当月当天 今天是2022-12-09 只有这一天是hasCurrent？？
 const hasCurrent = computed<boolean>(() => {
   return flatten(rows.value).some((row) => {
     return row.isCurrent
@@ -106,10 +119,11 @@ const hasCurrent = computed<boolean>(() => {
 
 const days = computed(() => {
   const startOfMonth = props.date.startOf('month')
+  // 当月第一天的星期几 周日就是7
   const startOfMonthDay = startOfMonth.day() || 7 // day of first day
-  const dateCountOfMonth = startOfMonth.daysInMonth()
+  const dateCountOfMonth = startOfMonth.daysInMonth() // 月份天数
 
-  const dateCountOfLastMonth = startOfMonth.subtract(1, 'month').daysInMonth()
+  const dateCountOfLastMonth = startOfMonth.subtract(1, 'month').daysInMonth() // 上个月天数
 
   return {
     startOfMonthDay,
@@ -120,7 +134,10 @@ const days = computed(() => {
 
 const selectedDate = computed(() => {
   return props.selectionMode === 'dates'
-    ? (castArray(props.parsedValue) as Dayjs[])
+    ? // 没有值的时候返回空数组
+      // 是数组的时候返回数组
+      // 非数组的是 转成数组 Array.isArray(arr)?arr:[arr]
+      (castArray(props.parsedValue) as Dayjs[])
     : ([] as Dayjs[])
 })
 
@@ -140,15 +157,27 @@ const setDateText = (
   const { startOfMonthDay, dateCountOfMonth, dateCountOfLastMonth } =
     unref(days)
   const offset = unref(offsetDay)
+  // 第1行和2行 需要判断是当月还是上月
   if (rowIndex >= 0 && rowIndex <= 1) {
+    // 上个月 本月是周一-周三 负数 0 1 2 3 => -1 -2 -3
     const numberOfDaysFromPreviousMonth =
       startOfMonthDay + offset < 0
         ? 7 + startOfMonthDay + offset
-        : startOfMonthDay + offset
+        : // 1号是周一 1 - 1 = 0
+          // 1号是周二 2 - 2 = 0
+          // 1号是周三 3 - 3 = 0
+          // 1号是周四 4 - 3 = 1
+          // 1号是周五 5 - 2 = 3
+          // 1号是周六 6 - 1 = 5
+          // 1号是周日 0 - 7 = -7
+          startOfMonthDay + offset
 
+    console.log('numberOfDaysFromPreviousMonth', numberOfDaysFromPreviousMonth)
+    // 当月
     if (columnIndex + rowIndex * 7 >= numberOfDaysFromPreviousMonth) {
       cell.text = count
       return true
+      // 上月
     } else {
       cell.text =
         dateCountOfLastMonth -
@@ -157,9 +186,12 @@ const setDateText = (
         rowIndex * 7
       cell.type = 'prev-month'
     }
+    // 其他行
   } else {
+    // 当月
     if (count <= dateCountOfMonth) {
       cell.text = count
+      // 下月
     } else {
       cell.text = count - dateCountOfMonth
       cell.type = 'next-month'

@@ -1,3 +1,10 @@
+/*
+ * @Description:
+ * @Author: yt120763
+ * @Date: 2022-12-10 14:09:10
+ * @LastEditors: yt120763
+ * @LastEditTime: 2022-12-10 17:05:46
+ */
 import { defineComponent, provide, reactive, ref, toRef } from 'vue'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
@@ -48,6 +55,7 @@ export default defineComponent({
     })
 
     const commonPicker = ref<InstanceType<typeof CommonPicker>>()
+    // 暴露的公用方法
     const refProps = {
       focus: (focusStartInput = true) => {
         commonPicker.value?.focus(focusStartInput)
@@ -61,7 +69,7 @@ export default defineComponent({
     }
 
     expose(refProps)
-
+    // 双向数据绑定
     const onModelValueUpdated = (val: any) => {
       emit('update:modelValue', val)
     }
