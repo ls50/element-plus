@@ -1,3 +1,10 @@
+/*
+ * @Description:
+ * @Author: yt120763
+ * @Date: 2022-12-10 14:09:10
+ * @LastEditors: yt120763
+ * @LastEditTime: 2022-12-10 16:24:58
+ */
 import DatePicker from './src/date-picker'
 
 import type { App } from 'vue'

@@ -1,3 +1,10 @@
+/*
+ * @Description:
+ * @Author: yt120763
+ * @Date: 2022-12-11 11:53:33
+ * @LastEditors: yt120763
+ * @LastEditTime: 2022-12-11 12:03:36
+ */
 export const datePickTypes = [
   'year',
   'month',
@@ -8,6 +15,7 @@ export const datePickTypes = [
   'datetimerange',
   'daterange',
   'monthrange',
+  'datetimerangeselect',
 ] as const
 
 export const WEEK_DAYS = [
