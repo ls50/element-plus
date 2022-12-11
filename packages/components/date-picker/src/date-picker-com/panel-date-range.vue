@@ -9,7 +9,6 @@
       },
     ]"
   >
-    仅仅做测试
     <div :class="ppNs.e('body-wrapper')">
       <slot name="sidebar" :class="ppNs.e('sidebar')" />
       <div v-if="hasShortcuts" :class="ppNs.e('sidebar')">
