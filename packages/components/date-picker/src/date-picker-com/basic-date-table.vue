@@ -171,8 +171,6 @@ const setDateText = (
           // 1号是周六 6 - 1 = 5
           // 1号是周日 0 - 7 = -7
           startOfMonthDay + offset
-
-    console.log('numberOfDaysFromPreviousMonth', numberOfDaysFromPreviousMonth)
     // 当月
     if (columnIndex + rowIndex * 7 >= numberOfDaysFromPreviousMonth) {
       cell.text = count

@@ -12,6 +12,7 @@ node_modules
 dist
 coverage
 packages/element-plus/version.ts
+.history
 
 # local env files
 *.local
